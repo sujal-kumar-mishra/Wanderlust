@@ -1,0 +1,95 @@
+<% layout('./layouts/boilerplate') -%>
+    <div class="row mt-3">
+        <div class="col-8 offset-2">
+            <h3 class="mb-3">Edit Your Listing</h3>
+            <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="needs-validation" novalidate enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Enter Title :</label>
+                    <input name="listing[title]" value="<%= listing.title %>" type="text" id="title" class="form-control" required>
+                    <div class="valid-feedback">Looks Good</div>
+                    <div class="invalid-feedback">
+                        please add a valid Title
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Enter Description :</label>
+                    <textarea name="listing[description]" placeholder="enter description" id="description" class="form-control" required><%= listing.description %></textarea>
+                    <div class="valid-feedback">Looks Good</div>
+                    <div class="invalid-feedback">
+                        please add a valid Description
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="category">Category</label>
+                    <select id="category" class="form-select" aria-label="Default select example" name="listing[category]" required>
+                        <option value="Luxury">Luxury</option>
+                        <option value="Vacation Rentals">Vacation Rentals</option>
+                        <option value="Beachfront">Beachfront</option>
+                        <option value="Mountain Retreat">Mountain Retreat</option>
+                        <option value="Eco_Friendly">Eco-Friendly</option>
+                        <option value="Historic">Historic</option>
+                        <option value="Modern">Modern</option>
+                        <option value="Private">Private</option>
+                        <option value="Tropical">Tropical</option>
+                        <option value="Rustic">Rustic</option>
+                        <option value="Ski Resort">Ski Resort</option>
+                        <option value="Art Deco">Art Deco</option>
+                        <option value="Castle">Castle</option>
+                        <option value="Treehouse">Treehouse</option>
+                        <option value="Villa">Villa</option>
+                        <option value="Bungalow">Bungalow</option>
+                        <option value="Cabin">Cabin</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="cottage">Cottage</option>
+                        <option value="Log Cabin">Log Cabin</option>
+                        <option value="Desert Oasis">Desert Oasis</option>
+                        <option value="Beach House">Beach House</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    Original listing image<br/>
+                    <img src="<%= originalImageUrl %>" alt="image" class="object-fit-cover border rounded"/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload New Image:</label>
+                    <input name="listing[image]"  type="file" id="image" class="form-control">
+                    <div class="valid-feedback">Looks Good</div>
+                    <div class="invalid-feedback">
+                        Upload a valid Image
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="price" class="form-label">Enter Price :</label>
+                        <input name="listing[price]" value="<%= listing.price %>" type="text" id="price" class="form-control" required>
+                        <div class="valid-feedback">Looks Good</div>
+                        <div class="invalid-feedback">
+                            please add a valid Price
+                        </div>
+                    </div>
+                    <div class="mb-3 col-md-8">
+                        <label for="country" class="form-label">Enter Country :</label>
+                        <input name="listing[country]" value="<%= listing.country %>" type="text" id="country" class="form-control" required>
+                        <div class="valid-feedback">Looks Good</div>
+                        <div class="invalid-feedback">
+                            please add a valid Country
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Enter Location :</label>
+                    <input name="listing[location]" value="<%= listing.location %>" type="text" id="location" class="form-control" required>
+                    <div class="valid-feedback">Looks Good</div>
+                    <div class="invalid-feedback">
+                        please add a valid Location
+                    </div>
+                </div>
+                <button class="btn btn-dark add-btn mb-3">Edit</button>
+            </form>
+        </div>
+    </div>
