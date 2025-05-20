@@ -22,12 +22,12 @@
 
                 <div class="mb-3">
                     <label for="category">Category</label>
-                    <select id="category" class="form-select" aria-label="Default select example" name="listing[category]" required>
+                    <select id="category" class="form-select" aria-label="Default select example" name="listing[category]" multiple size="5" required>
                         <option value="Luxury">Luxury</option>
                         <option value="Vacation Rentals">Vacation Rentals</option>
                         <option value="Beachfront">Beachfront</option>
                         <option value="Mountain Retreat">Mountain Retreat</option>
-                        <option value="Eco_Friendly">Eco-Friendly</option>
+                        <option value="Eco-Friendly">Eco-Friendly</option>
                         <option value="Historic">Historic</option>
                         <option value="Modern">Modern</option>
                         <option value="Private">Private</option>
@@ -50,15 +50,17 @@
 
                 <div class="mb-3">
                     Original listing image<br/>
-                    <img src="<%= originalImageUrl %>" alt="image" class="object-fit-cover border rounded"/>
+                    <% for(let i = 0 ; i <  originalImageUrl.length ; i++){ %>
+                        <img src="<%= originalImageUrl[i] %>" alt="image" class="object-fit-cover border rounded"/>
+                    <% } %>
                 </div>
 
                 <div class="mb-3">
                     <label for="image" class="form-label">Upload New Image:</label>
-                    <input name="listing[image]"  type="file" id="image" class="form-control">
+                    <input name="listing[image]"  type="file" id="image" class="form-control" multiple>
                     <div class="valid-feedback">Looks Good</div>
                     <div class="invalid-feedback">
-                        Upload a valid Image
+                        Upload a valid Image & maximum 3 images
                     </div>
                 </div>
 

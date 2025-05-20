@@ -8,10 +8,10 @@ const listingSchema = new Schema({
         required : true
     },
     description : String,
-    image : {
+    image : [{
        url : String,
        filename : String,
-    },
+    }],
     price : {
         type : Number,
         required : true
@@ -37,9 +37,12 @@ const listingSchema = new Schema({
             required: true
           }
         },
-    category : {
-        type : String,
-        enum : [  "Luxury",
+    category: [{
+        type: String,
+        enum: [
+            "Rooms",
+            "Mountain",
+            "Luxury",
             "Vacation Rentals",
             "Beachfront",
             "Mountain Retreat",
@@ -61,8 +64,11 @@ const listingSchema = new Schema({
             "Log Cabin",
             "Desert Oasis",
             "Beach House",
-            "Island"],
-    }
+            "Island",
+            "Castle",
+            "Farms",
+        ]
+    }]
 });
 
 listingSchema.post("findOneAndDelete",async(listing)=>{

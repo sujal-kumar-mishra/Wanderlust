@@ -2,6 +2,8 @@ const Listing = require('../models/listing');
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
+const cloudinary = require('cloudinary').v2;
+
 
 module.exports.index = async (req,res)=>{
     const allListings = await Listing.find({});
@@ -31,12 +33,22 @@ module.exports.createListing = async (req,res,next)=>{
         limit: 1
       })
         .send();
-    
-    let url = req.file.path;
-    let filename = req.file.filename;
+    console.log(req.file);
+    let image = [];
+    for(let i = 0 ; i < req.files.length ; i++){
+        let object = {};
+        object.url = req.files[i].path;
+        object.filename = req.files[i].filename;
+        image.push(object);
+        console.log("inside" ,image);
+    }
+
+    // console.log(image);
+
     let newListing = new Listing(req.body.listing);
     newListing.owner = req.user._id;
-    newListing.image = {url,filename};
+    newListing.image = image;
+
     newListing.geometry = coordinate.body.features[0].geometry;
     await newListing.save();
     req.flash("success","New Listing Created");
@@ -53,8 +65,16 @@ module.exports.renderEditForm = async (req,res)=>{
         return res.redirect("/listings");
     }
 
-    let originalImageUrl = listing.image.url;
-    originalImageUrl = originalImageUrl.replace("/upload","/upload/h_300,w_250");
+    let originalImageUrl = [];
+
+    listing.image.forEach((img) => {
+        console.log(img.url);
+        img.url = img.url.replace("upload","upload/c_scale,w_100/q_auto/f_auto");
+        originalImageUrl.push(img.url);
+    });
+    
+    // console.log(originalImageUrl);
+
     res.render("listings/edit.ejs",{listing , originalImageUrl});
 };
 
@@ -66,10 +86,30 @@ module.exports.updateListing = async (req,res)=>{
 
     let listing = await Listing.findByIdAndUpdate(id,{...req.body.listing});
     
-    if(typeof req.file !=="undefined"){
-        let url = req.file.path;
-        let filename = req.file.filename;
-        listing.image = {url,filename};
+    if(typeof req.files !=="undefined"){
+        
+        await listing.image.forEach((img) => {
+            let filename = img.filename;
+            cloudinary.uploader.destroy(filename,(err,result) => {
+            if(err){
+                    console.log(err);
+            }else{
+                    console.log(result);
+                }
+            });
+        });
+        
+        let image = [];
+        
+        for(let i = 0 ; i < req.files.length ; i++){
+            let object = {};
+            object.url = req.files[i].path;
+            object.filename = req.files[i].filename;
+            image.push(object);
+            console.log("inside" ,image);
+        }
+        
+        listing.image = image;
         await listing.save();
     }
 
@@ -81,8 +121,35 @@ module.exports.updateListing = async (req,res)=>{
 module.exports.destroyListing = async (req,res)=>{
     let {id} = req.params;
     let deletedData = await Listing.findByIdAndDelete(id);
+
+    await deletedData.image.forEach((img) => {
+        let filename = img.filename;
+            cloudinary.uploader.destroy(filename,(err,result) => {
+            if(err){
+                console.log(err);
+            }else{
+                console.log(result);
+            }
+        });
+    });
+
     console.log(deletedData);
 
     req.flash("success","Listing Deleted!");
     res.redirect("/listings");
+};
+
+module.exports.searchCategory = async (req,res)=>{
+    // console.log(req.query);
+    let {search} = req.query;
+    // console.log(search);
+    let allListings = await Listing.find({ category : search });
+    res.render('listings/index.ejs',{allListings});
+};
+
+
+module.exports.searchTitle = async (req,res)=>{
+    let {title} = req.query;
+    let allListings = await Listing.find({title : title});
+    res.render('listings/index.ejs',{allListings});
 };

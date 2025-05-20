@@ -11,17 +11,23 @@ const upload = multer({storage});
 //collecting the data and adding it to database
 router.route("/")
 .get(wrapAsync(listingController.index))
-.post(isLoggedIn,upload.single('listing[image]'),validateListing,wrapAsync(listingController.createListing));
+.post(isLoggedIn,upload.array('listing[image]',3),validateListing,wrapAsync(listingController.createListing));
 
 //new route
 router.get("/new",isLoggedIn,listingController.renderNewForm);
+
+//search route based on category
+router.get("/category",wrapAsync(listingController.searchCategory));
+
+//search route based on title
+router.get("/name",wrapAsync(listingController.searchTitle));
 
 //show route (read operation)
 //updating the database based on id
 //deleting the data (delete route)
 router.route('/:id')
 .get(wrapAsync(listingController.showListing))
-.put(isLoggedIn,isOwner,upload.single('listing[image]'),validateListing,wrapAsync(listingController.updateListing))
+.put(isLoggedIn,isOwner,upload.array('listing[image]',3),validateListing,wrapAsync(listingController.updateListing))
 .delete(isLoggedIn,isOwner,wrapAsync(listingController.destroyListing));
 
 

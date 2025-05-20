@@ -17,6 +17,7 @@ module.exports.isLoggedIn = (req,res,next) => {
 };
 
 module.exports.saveRedirectUrl = (req,res,next) => {
+    console.log('middleware2');
     if(req.session.redirectUrl){
         res.locals.redirectUrl = req.session.redirectUrl;
     }
@@ -24,6 +25,7 @@ module.exports.saveRedirectUrl = (req,res,next) => {
 };
 
 module.exports.isOwner = async(req,res,next) => {
+    console.log('middleware3');
     let {id} = req.params;
     let listing = await Listing.findById(id);
     if(!listing.owner._id.equals(res.locals.currUser._id)){
@@ -35,6 +37,7 @@ module.exports.isOwner = async(req,res,next) => {
 };
 
 module.exports.validateListing = (req,res,next)=>{
+    console.log('middleware4');
     let { error } = listingSchema.validate(req.body);
     if(error){
         let errMsg = error.details.map((el) => el.message).join(",");
@@ -45,6 +48,7 @@ module.exports.validateListing = (req,res,next)=>{
 };
 
 module.exports.validateReview = (req,res,next) => {
+    console.log('middleware5');
     let {error} = reviewSchema.validate(req.body);
     if(error){
         let errMsg = error.details.map((el) => el.message).join(',');
@@ -57,7 +61,7 @@ module.exports.validateReview = (req,res,next) => {
 
 module.exports.isReviewAuthor = async(req,res,next) => {
     let {id , reviewId} = req.params;
-    console.log('middleware2');
+    console.log('middleware6');
     let review = await Review.findById(reviewId);
     if(!review.author.equals(res.locals.currUser._id)){
         req.flash("error","you are not the owner of review")
