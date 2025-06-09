@@ -23,28 +23,16 @@
                 <div class="mb-3">
                     <label for="category">Category</label>
                     <select id="category" class="form-select" aria-label="Default select example" name="listing[category]" multiple size="5" required>
-                        <option value="Luxury">Luxury</option>
-                        <option value="Vacation Rentals">Vacation Rentals</option>
-                        <option value="Beachfront">Beachfront</option>
-                        <option value="Mountain Retreat">Mountain Retreat</option>
-                        <option value="Eco-Friendly">Eco-Friendly</option>
-                        <option value="Historic">Historic</option>
-                        <option value="Modern">Modern</option>
-                        <option value="Private">Private</option>
-                        <option value="Tropical">Tropical</option>
-                        <option value="Rustic">Rustic</option>
-                        <option value="Ski Resort">Ski Resort</option>
-                        <option value="Art Deco">Art Deco</option>
-                        <option value="Castle">Castle</option>
-                        <option value="Treehouse">Treehouse</option>
-                        <option value="Villa">Villa</option>
-                        <option value="Bungalow">Bungalow</option>
-                        <option value="Cabin">Cabin</option>
-                        <option value="Apartment">Apartment</option>
-                        <option value="cottage">Cottage</option>
-                        <option value="Log Cabin">Log Cabin</option>
-                        <option value="Desert Oasis">Desert Oasis</option>
-                        <option value="Beach House">Beach House</option>
+                        <% const categories = [
+                            "Luxury", "Vacation Rentals", "Beachfront", "Mountain Retreat", "Eco-Friendly",
+                            "Historic", "Modern", "Private", "Tropical", "Rustic", "Ski Resort", "Art Deco",
+                            "Castle", "Treehouse", "Villa", "Bungalow", "Cabin", "Apartment", "Cottage",
+                            "Log Cabin", "Desert Oasis", "Beach House", "Island", "Farms"
+                        ]; %>
+
+                        <% categories.forEach(cat => { %>
+                            <option value="<%= cat %>" <%= listing.category && listing.category.includes(cat) ? 'selected' : '' %>><%= cat %></option>
+                        <% }) %>
                     </select>
                 </div>
 

@@ -86,8 +86,7 @@ module.exports.updateListing = async (req,res)=>{
 
     let listing = await Listing.findByIdAndUpdate(id,{...req.body.listing});
     
-    if(typeof req.files !=="undefined"){
-        
+    if(typeof req.files !=="undefined" && req.files.length > 0){
         await listing.image.forEach((img) => {
             let filename = img.filename;
             cloudinary.uploader.destroy(filename,(err,result) => {
